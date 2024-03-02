@@ -9,3 +9,12 @@ export function weatherapi() {
     .then((data) => callback(data));
 }
 
+export const url = {
+  currentWeather(lat,ln){
+    return `https://api.openweathermap.org/data/2.5/weather?${lat}&${lon}&units=metric&appid`
+  },
+  daysFor(lat,lan){
+    return`https://api.openweathermap.org/data/2.5/forecast?${lat}&${lon}&units=metric&appid`
+  }
+  air
+}
