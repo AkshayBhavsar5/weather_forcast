@@ -4,13 +4,15 @@
 
 import{updateWeater,error404} from "./script.js";
 
-const defuleLocation = "#/wether?lat=51.5073219&lon=-0.12767474"; //london
+const defuleLocation = "#/wether?51.5073219&-0.12767474"; //london
 
 const currentLocation = function () {
    window.navigator.geolocation.getCurrentPosition(res=>{
     const {latitude, longitude} = res.coords;
-
-    updateWeater(`lat=${latitude}`,`lon=${longitude}`)  
+    // console.log(latitude);
+    // console.log(longitude);
+    // updateWeater(`lat=${latitude}`,`lon=${longitude}`)  
+    updateWeater(latitude,longitude)
   },err =>{
     window.location.hash = defuleLocation;
   })
@@ -27,7 +29,6 @@ const routes = new Map([
 
 const checkHash = function () {
   const requestFromURL = window.location.hash.slice(1)
-
   const [route,query] = requestFromURL.includes ? requestFromURL.split("?") :[requestFromURL];
   routes.get(route) ? routes.get(route)(query) : error404();
 };
@@ -36,7 +37,7 @@ window.addEventListener("hashchange", checkHash);
 
 window.addEventListener("load", function () {
   if (!window.location.hash) {
-    window.location.hash = "/current-loaction";
+    window.location.hash = "#/current-loaction";
   } else {
     checkHash();
   }

@@ -11,6 +11,7 @@ body {
     height: 100%;
     width: 100%;
     background-color: #131315;
+
     color: #b7b4b4b5;
     /* font-family: "Protest Revolution", sans-serif; */
 }
@@ -59,11 +60,23 @@ body {
     /**
     transition
     */
-    --transition-short:100ms ease;
-
+    --transition-short: 100ms ease;
 
 }
 
+.fade-in {
+    animation: fade-in 100ms ease forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 /* // <uniquifier>: Use a uniquifier for the class name
 // <weight>: Use a value from 300 to 700
@@ -79,10 +92,16 @@ button,
 input {
     display: block;
 }
-sub{vertical-align: baseline;}
-sup{vertical-align: top;}
 
-button{cursor: pointer;}
+
+sup {
+    vertical-align: top;
+}
+
+button {
+    cursor: pointer;
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -94,14 +113,14 @@ a {
     #navbar css for dekstop view
 \*------------------*/
 
- #navbar{
+#navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-left: 3rem;
     padding-right: 3rem;
     height: 5rem;
-    
+
 }
 
 
@@ -137,87 +156,97 @@ a {
     #search bar
 \*------------------*/
 
-.searchview{
+.searchview {
 
     position: relative;
-    width:43%;
-    background-color:var(--surface);
+    width: 43%;
+    background-color: var(--surface);
     border-radius: var(--radius-28);
     color: var(--outline);
-    z-index: 1;
 }
-.searchWrapper{
+
+.searchWrapper:has(:focus-within){
+    border-radius: var(--radius-28) var(--radius-28) 0px 0px;
+}
+
+.searchWrapper {
     display: flex;
     align-items: center;
     padding: 10px 20px;
     flex-direction: row-reverse;
     gap: 15px;
 }
-.searchfied{
-    background-color: #fff;
+
+.searchfied {
+    color: var(--on-surface-variant);
     flex: 1;
     height: 30px;
     border: 0;
     outline: 0;
-    background-color:transparent;
-    font-size: 16px;    
-}
-.searchview .searchResult{
-    padding-top: 1em;
-    background-color:var(--surface);
-    display: flex;
-    overflow: hidden;
-    z-index: -1;
-    border-radius: 0px 0px var(--radius-28) var(--radius-28);
+    background-color: transparent;
+    font-size: 16px;
 }
 
-.searchResult .viewList{
-    /* position: absolute;
+.searchview .searchResult {
+    width: 100%;
     top: 100%;
-    left: 0; */
+    z-index: 1;
+    position: absolute;
+    background-color: var(--surface);
+    display: flex;
+    border-radius: 0px 0px var(--radius-28) var(--radius-28);
+    /* background-color: red; */
+
+}
+.searchResult .viewList{
     width: 100%;
     max-height: 360px;
+} 
+.searchResult .viewItem {
+
     border-top: 1px solid #999;
     padding: 5px;
 }
-.searchResult .viewList .viewItem{
+
+.searchResult .viewList .viewItem {
     border-radius: 3px;
     padding: 5px;
 }
-.viewItem{
+
+.viewItem {
     display: flex;
     gap: 15px;
     cursor: pointer;
 }
-.searchview .viewItem :is(.m-icon, .itemSubtitle){
+
+.searchview .viewItem :is(.m-icon, .itemSubtitle) {
     color: var(--on-surface-variant);
 }
-.searchResult,
-.searchview:not(:focus-within).searchResult{
-    display: none;
-}
-.searchview:focus-within.searchResult.active{
-    display: block;
-}
-.searchview:is(:hover,:has(.viewList):hover){
-    filter: drop-shadow(var(--shadow-1))
-}
-.searchview:has(:focus-within,:has(.viewList):focus-within){
-    filter: drop-shadow(var(--shadow-2))
 
-}
+/* .searchResult,
+.searchview:not(:focus-within).searchResult {
+    display: none;
+} */
+
+/* .searchview:focus-within.searchResult.active {
+    display: block;
+} */
+
+
 /*------------------*\
     #Current weather btn
 \*------------------*/
 
-.location .icon-btn{
+.location .icon-btn {
     display: none;
 }
-.location{
+
+.location {
     display: flex;
     align-items: center;
 }
-.second-btn{
+
+.second-btn {
     background-color: var(--primary);
     color: var(--on-primary);
     height: 48px;
@@ -225,13 +254,15 @@ a {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding-inline:16px;
+    padding-inline: 16px;
     border-radius: var(--radius-pill);
 }
-.second-btn .span-btn{
+
+.second-btn .span-btn {
     font-weight: 700;
 }
-.second-btn[disabled]{
+
+.second-btn[disabled] {
     background-color: var(--outline);
     color: var(--on-surface-variant);
     cursor: not-allowed;
@@ -272,26 +303,31 @@ a {
     font-size: 50px;
 }
 
-.weatherDet .Weather-icon {
+.card .Weather-icon {
     position: absolute;
     left: 50%;
     top: 5%;
     right: 0%;
 }
 
-.weatherDet {
+.card {
     position: relative;
+    margin-bottom: 5px;
+}
+
+.card .cloud-condition {
     border-bottom: 0.1px solid #565353e6;
     margin-bottom: 5px;
 }
 
-.areaDate .area-icon {
+.card .areaDate .area-icon {
+
     padding-right: 9px;
     width: 30px;
-    height: auto;
+    height: 20px;
 }
 
-.areaDate {
+.card .areaDate {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
@@ -361,6 +397,7 @@ a {
 .rightMain {
     display: flex;
     height: auto;
+    width: 100%;
     flex-wrap: wrap;
     padding: 1rem;
     gap: 2rem;
@@ -379,7 +416,7 @@ a {
     display: flex;
     width: 100%;
     /* background-color: #1a54d0; */
-    background-color: #1c1c1e;
+    background-color: var(--surface);
     padding: 1rem;
     flex-direction: column;
     border-radius: 20px;
@@ -391,8 +428,9 @@ a {
 .rightfirst .rightFirstChild {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* background-color: palevioletred; */
     padding-top: 1.8rem;
+    justify-content: space-between;
 }
 
 .rightfirst .rightSecondChild {
@@ -404,18 +442,19 @@ a {
 .right-small-one {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 35rem;
+    width: 33rem;
     height: 155px;
     background-color: #1a191c;
     padding: 20px;
     position: relative;
+    /* background-color: red; */
 }
 
 .right-small-one ul {
     list-style: none;
 }
 
-.air-quality-2 img {
+.air-quality-2 .Weather-icon{
     width: 80px;
 }
 
@@ -423,25 +462,31 @@ a {
 .card-list {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    gap: 40px;
     font-size: 20px;
     align-items: center;
-}
-
-.air-quality-2 {
-    flex-wrap: wrap;
-    align-items: center;
-    padding-top: 15px;
-}
-
-.right-card-item p {
-    padding-top: 10px;
     text-align: center;
 }
 
+.air-quality-2 {
+
+    padding-top: 15px;
+}
+
+
+.rightFirstChild .card-p-tag{
+    font-size: 28px;
+    font-weight: 600;
+}
+.rightFirstChild .card-list .card-list-p {
+    font-size: 30px;
+    font-weight: 400;
+    text-align: center;
+}
+/* 
 .right-card-item :is(:first-child) {
     font-size: 12px;
-}
+} */
 
 .badge.aqi-1 {
     position: absolute;
@@ -452,29 +497,59 @@ a {
     border-radius: 12px;
     font-weight: bold;
     cursor: help;
+    background-color: #70ed78;
+    color: #000000;    
 }
 
-.badge.aqi-1 {
-    background-color: #70ed78;
-    color: #000000;
-}
 
 .badge.aqi-2 {
+    position: absolute;
+    top: 14%;
+    left: auto;
+    right: 1%;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: help;
     background-color: #dced70;
     color: #000000;
 }
 
 .badge.aqi-3 {
+    position: absolute;
+    top: 14%;
+    left: auto;
+    right: 1%;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: help;
     background-color: #edbf70;
     color: #000000;
 }
 
 .badge.aqi-4 {
+    position: absolute;
+    top: 14%;
+    left: auto;
+    right: 1%;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: help;
     background-color: #c03d3d;
     color: #000000;
 }
 
 .badge.aqi-5 {
+    position: absolute;
+    top: 14%;
+    left: auto;
+    right: 1%;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: help;
     background-color: #ed7070;
     color: #000000;
 }
@@ -482,24 +557,36 @@ a {
 .right-small-two {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 35rem;
+    width: 33rem;
     height: 155px;
     background-color: #1a191c;
-    padding: 20px;
+    padding: 15px;
+    /* background-color: green; */
 }
-
-.sunrise-sunset {
+.right-small-two .card-list .lable-1{
+    font-size: 20px;
+    font-weight: 600;
+    padding: 5px 5px;
+}
+.right-small-two .sunrise-sunset {
     display: flex;
-    padding-top: 15px;
+    padding-top: 16px;
     align-items: center;
     gap: 25px;
 }
-
+.right-small-two .card-list .Weather-icon{
+    width: 75px; 
+    height: 75px;
+}
+.right-small-two .card-list .title-3{
+    font-size: 29px;
+    font-weight: 500;
+} 
 .right-small-three {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 250px;
-    height: 120px;
+    /* width: 250px;
+    height: 120px; */
     background-color: #1a191c;
 }
 
@@ -507,28 +594,30 @@ a {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     background-color: #1a191c;
-    width: 250px;
-    height: 120px;
+    /* width: 250px;
+    height: 120px; */
 }
 
 .right-small-five {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 250px;
-    height: 120px;
+    /* width: 250px;
+    height: 120px; */
     background-color: #1a191c;
 }
 
 .right-small-six {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 250px;
-    height: 120px;
+    /* width: 250px;
+    height: 120px; */
     background-color: #1a191c;
 }
 
 .highlight-card {
     padding: 15px;
+     width: 230px;
+    height: 120px;
 }
 
 .highlight-card :is(.wrapper) {
@@ -542,20 +631,26 @@ a {
     font-size: 25px;
     font-weight: 800;
 }
+.wrapper .title-1{
+    display: flex;
+}
 
-.wrapper img {
+.wrapper .wrapper-img{
     width: 50px;
     height: 50px;
     margin-top: 6px;
 }
 
+
+/**
+    temp and wind secion
+  */
 .rightsecond .title-2 {
     position: absolute;
-    top: -6%;
-    left: 2%;
-    right: 0%;
+    top: -15%;
+    left: 1%;
     font-size: 24px;
-    font-weight: bolder;
+    font-weight: 600;
 }
 
 .rightsec-small ul {
@@ -563,43 +658,41 @@ a {
 }
 
 .rightsecond {
+    margin-top: 1rem;
     display: flex;
     width: 100%;
-
     flex-direction: column;
+    gap: 2rem;
+
     position: relative;
 }
-
-.tempDiv {
-    margin-top: 1rem;
+.rightsecond .slider-list{
+    /* background-color: rgb(84, 7, 7); */
     display: flex;
     justify-content: space-between;
-    flex-direction: row;
 }
-
-.windDiv {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
-.rightsec-small {
-    padding: 20px;
+.rightsecond .slider-item{
     text-align: center;
-    width: 110px;
-    height: 135px;
-    background-color: #151517;
-    border-radius: 16px;
+    background-color: var(--surface);
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-16);
 }
+.rightsecond .slider-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
 
-.slider-card img {
+}
+.slider-card .Weather-icon {
     width: 50px;
     height: 50px;
 }
 
-.slider-card p {
+.slider-card .p-tag {
     font-size: 30ox;
+    text-align: center;
     padding: 5px 5px;
 }
 
@@ -609,14 +702,11 @@ a {
 .loading {
     /* display: grid; */
     display: none;
-    place-items: center;
     position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background-color: #131315;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    width: min-content;
 }
 
 .loading::before {

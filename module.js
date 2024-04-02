@@ -1,4 +1,5 @@
 // import { fetchData } from "./apikey";
+'use strict';
 
 export const weekDaysName = [
     "Sunday",
@@ -24,38 +25,33 @@ export const monthsName = [
     "Nov",
     "Dec"
 ]
-
-export const disteanceinKmh = function mitterPerSec (){
-    const mitterPerHour = mitterPerSec *3600;
-
-    return mitterPerSec / 1000 ; 
-}
-
 export const getDate = function (dateUnix,timeZone) {
-    const date = new Date ((dateUnix / timeZone)*1000)
-    const week = weekDaysName [date.getUTCDay()]
-    const month = monthsName  [date.getUTCMonth()]
-
-    return `${date.getUTCDate} ,${weekDaysName} ,${monthsName}`
+    const date = new Date ((dateUnix + timeZone)*1000)
+    const week = weekDaysName[date.getUTCDay()];
+    const month = monthsName[date.getUTCMonth()];
+    return `${week}  ${date.getUTCDate()} , ${month}`
 }
 
 export const getTime  =function (timeUnix, timeZone) {
-    const date = new Date ((timeUnix / timeZone)*1000)
+    const date = new Date ((timeUnix + timeZone)*1000)
     const hours = date.getUTCHours()
     const minute = date.getUTCMinutes()
     const amOrPm = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} :${minute} :${amOrPm} `
-
 }
-
-
-export const gethours  =function (timeUnix, timeZone) {
-    const date = new Date ((timeUnix / timeZone)*1000)
+export const getHours  =function (timeUnix, timeZone) {
+    const date = new Date ((timeUnix + timeZone)*1000)
     const hours = date.getUTCHours()
-    return `${ hours % 12 || 12} :${amOrPm}`
+    const amOrPm = hours >= 12 ? "PM" : "AM";
+    return `${ hours % 12 || 12} ${amOrPm}`
 }
 
+export const disteanceinKmh =  mitterPerSec => {
+    const mitterPerHour = mitterPerSec *3600;
+
+    return mitterPerHour /  1000 ; 
+}
 
 export const aqiTitle ={
     1:{
