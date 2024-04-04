@@ -94,7 +94,7 @@ const mainContainer = document.querySelector("[data-container]");
 const loading = document.getElementsByClassName("loading")[0];
 const currentLocationBtn = document.querySelector((".location", ".second-btn"));
 currentLocationBtn.addEventListener("click", () => {
-  window.location.hash = "#/current-location";
+  window.location.hash = "#/current-loaction";
 });
 const errorcontent = document.querySelector("[data-error-content]")[0];
 
