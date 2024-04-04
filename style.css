@@ -156,81 +156,87 @@ a {
     #search bar
 \*------------------*/
 
-.searchview {
-
-    position: relative;
-    width: 43%;
+#navbar .searchview{
+    height: 3rem;
+    /* width: 38%; */
+    padding: 5px 20px;
     background-color: var(--surface);
+    /* background-color: blue; */
     border-radius: var(--radius-28);
-    color: var(--outline);
-}
-
-.searchWrapper:has(:focus-within){
-    border-radius: var(--radius-28) var(--radius-28) 0px 0px;
-}
-
-.searchWrapper {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
-    flex-direction: row-reverse;
-    gap: 15px;
-}
-
-.searchfied {
-    color: var(--on-surface-variant);
-    flex: 1;
-    height: 30px;
-    border: 0;
-    outline: 0;
-    background-color: transparent;
-    font-size: 16px;
-}
-
-.searchview .searchResult {
-    width: 100%;
-    top: 100%;
+    position: relative;
     z-index: 1;
+}
+.searchview:hover,
+.searchview:focus-within{
+    background-color: var(--on-surface-variant);
+}
+.searchview .searchWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 13px;
+
+}
+
+.searchview .searchResult{
     position: absolute;
-    background-color: var(--surface);
-    display: flex;
-    border-radius: 0px 0px var(--radius-28) var(--radius-28);
-    /* background-color: red; */
-
-}
-.searchResult .viewList{
+    left: 0;
+    top: 45%;
+    z-index: -1;
     width: 100%;
-    max-height: 360px;
-} 
-.searchResult .viewItem {
-
-    border-top: 1px solid #999;
-    padding: 5px;
+    height: auto;
+    padding-top: 1.5em;
+    border-radius: 0px 0px var(--radius-28) var(--radius-28);
+    background-color: inherit;
+    display: none;
+    overflow: hidden;
 }
-
-.searchResult .viewList .viewItem {
-    border-radius: 3px;
-    padding: 5px;
+.searchview:focus-within .searchResult{
+    display: block;
 }
-
-.viewItem {
+.searchResult .viewItem{
+    height: 3rem;
+    padding: 5px 10px;
+    list-style: none;
+    border-top: 1px solid var(--white-alpha-8);
     display: flex;
+    align-items: center;
     gap: 15px;
     cursor: pointer;
+    position: relative;
 }
-
-.searchview .viewItem :is(.m-icon, .itemSubtitle) {
+.searchResults .viewItem:hover {
+    background-color: var(--white-alpha-4);
+}
+.viewList .itemLink{
+    position: absolute;
+    /* background-color: yellow; */
+    inset: 0;
+}
+.searchResults .itemTitle{
+    font-size: 13px;
+}
+.searchResults .itemSubtitle{
+    font-size: 12px;
     color: var(--on-surface-variant);
 }
 
-/* .searchResult,
-.searchview:not(:focus-within).searchResult {
-    display: none;
-} */
 
-/* .searchview:focus-within.searchResult.active {
-    display: block;
-} */
+.searchview .searchfied{
+     width: 29em;
+     flex: 1;
+     height: 100%;
+     font-size: inherit;
+     color: var(--on-background);
+     font-weight: bold;
+     background: none;
+     /* background-color: red; */
+     text-align: start;
+     border: none;
+     outline: none;
+}
 
 
 /*------------------*\
@@ -247,6 +253,7 @@ a {
 }
 
 .second-btn {
+    cursor: pointer;
     background-color: var(--primary);
     color: var(--on-primary);
     height: 48px;
@@ -373,27 +380,7 @@ a {
     text-align: right;
 }
 
-/* 
-.upwardCon{
-    width: 67pc;
-    height: 300px;
-    background-color: #1a54d0;
-    background-color: #1c1c1e;
-    border-radius: 20px;
-    padding: 20px;
 
-}
-.down{
-    margin-top: 10px;
-     
-     background-color: #c4d01a;
-      
-     border-radius: 20px;
-     height: 300px; 
-     width: 67pc;
-    padding: 20px; 
-
-} */
 .rightMain {
     display: flex;
     height: auto;
@@ -401,6 +388,7 @@ a {
     flex-wrap: wrap;
     padding: 1rem;
     gap: 2rem;
+
 }
 
 .rightfirst .title-2 {

@@ -20,13 +20,26 @@ const addEventOnElements = function (elements, eventType, callback) {
 
 const searchView = document.querySelector("[data-search-view]");
 const searchTogglers = document.querySelectorAll("[data-search-toggler]");
-// const toggleSearch = () => searchView.classList.toggle("active");
-// addEventOnElements(searchTogglers, "click", toggleSearch);
 
 const searchFiled = document.querySelector("[data-search-filed]");
 
 const searchResultvar = document.querySelector("[data-search-result]");
 
+searchView.addEventListener("click", () => searchFiled.focus());
+document.addEventListener("click", function (e) {
+  var target = e.target;
+  // Check if click target is not within search div or its children
+  if (!searchView.contains(target)) {
+    searchResultvar.style.display = "none";
+    searchFiled.value = "";
+  } else {
+    if (searchResultvar.contains(target)) {
+      searchResultvar.style.display = "none";
+      searchFiled.value = "";
+      searchFiled.blur();
+    }
+  }
+});
 let searchTimeout = null;
 const searchTimeoutDuration = 500;
 
@@ -34,11 +47,12 @@ searchFiled.addEventListener("input", function () {
   searchTimeout ?? clearTimeout(searchTimeout);
 
   if (!searchFiled.value) {
+    searchResultvar.style.display = "none";
     // searchResultvar.innerHTML = "";
-    searchFiled.classList.remove("searching");
-  } else {
-    searchFiled.classList.add("searching");
   }
+  // else {
+  //   searchFiled.classList.add("searching");
+  // }
   if (searchFiled.value) {
     searchTimeout = setTimeout(() => {
       fetchData(url.geoCoding(searchFiled.value), function (location) {
@@ -54,23 +68,22 @@ searchFiled.addEventListener("input", function () {
           const searchItem = document.createElement("li");
           searchItem.classList.add("viewItem");
           searchItem.innerHTML = `
-                        <img style="width:25px; height: 25px;" class="location" src="icon/icons8-location-50.png">
-                            <div>
-                                <p class="itemTitle" style="color: #fff;">${name}</p>
-                                <p class="itemSubtitle">${
-                                  state || ""
-                                } ${country}</p>
-                            </div>
-                                <a href="#/weather?lat=${lat}&lon=${lon}" class="itemLink" aria-label="${name}" data-search-tollger></a>
-                    `;
+          <span> <img src="icon/icons8-location-50.png" style="width: 25px;" height="25px"class="m-icon">
+          </span>
+              <div>
+                <p class="itemTitle">${name}</p>
+                <p class="itemSubtitle">${state || ""} ${country}</p>
+              </div>
+              <a href="#/weather?${lat}&${lon}" aria-label="${name}" class="itemLink" data-search-tollger></a>
+              `;
           searchResultvar
             .querySelector("[data-search-list]")
             .appendChild(searchItem);
-          item.push(searchItem.querySelector("[data-search-tollger]"));
+          item.push(searchItem.querySelector(".itemLink"));
         }
-        addEventOnElements(item, "click", function () {
-          toggleSearch();
-        });
+        // addEventOnElements(item, "click", function () {
+        //   toggleSearch();
+        // });
       });
     }, searchTimeoutDuration);
   }
@@ -79,10 +92,11 @@ searchFiled.addEventListener("input", function () {
 });
 const mainContainer = document.querySelector("[data-container]");
 const loading = document.getElementsByClassName("loading")[0];
-const currentLocationBtn = document.querySelector(
-  "[data-current-location-btn]"
-);
-const errorcontent = document.querySelector("[data-error-content]");
+const currentLocationBtn = document.querySelector((".location", ".second-btn"));
+currentLocationBtn.addEventListener("click", () => {
+  window.location.hash = "#/current-location";
+});
+const errorcontent = document.querySelector("[data-error-content]")[0];
 
 /**
  * current weather section
@@ -93,7 +107,7 @@ export const updateWeater = function (lat, lon) {
   //   mainContainer.style.overflowy = "hidden";
   mainContainer.style.display = "none";
   mainContainer.classList.remove("fade-in");
-  errorcontent.style.display = "none";
+  // errorcontent.style.display = "none";
 
   const currentWeatherSection = document.querySelector(
     "[data-current-weather]"
@@ -104,14 +118,14 @@ export const updateWeater = function (lat, lon) {
 
   currentWeatherSection.innerHTML = "";
   highlightsSection.innerHTML = "";
-  // fiveDaysForecast.innerHTML="";
-  // hourlyForcast.innerHTML="";
+  fiveDaysForecast.innerHTML = "";
+  hourlyForcast.innerHTML = "";
 
-  if (window.location.hash === "#/current-loaction") {
-    currentLocationBtn.setAttribute("disabled", "");
-  } else {
-    currentLocationBtn.removeAttribute("disabled");
-  }
+  // if (window.location.hash === "#/current-loaction") {
+  //   currentLocationBtn.setAttribute("disabled", "");
+  // } else {
+  //   currentLocationBtn.removeAttribute("disabled");
+  // }
 
   /**
    * Current weather Section
@@ -129,7 +143,7 @@ export const updateWeater = function (lat, lon) {
       timezone,
     } = currentWeather;
 
-    console.log(currentWeather);
+    // console.log(currentWeather);
 
     const [{ description, icon }] = weather;
     const card = document.createElement("div");
@@ -138,7 +152,9 @@ export const updateWeater = function (lat, lon) {
                     <h2>Now</h2>
                     <h1 class="temp-1">${parseInt(temp)}&deg;<sup>c</sup></h1>
                     <img src="icon/icons8-cloud-96.png" class="Weather-icon mainWeathericon" alt=${description}>
-                    <p class="cloud-condition">${description}</p>
+                    <p class="cloud-condition">${
+                      description[0].toUpperCase() + description.slice(1)
+                    }</p>
                  
                 <ul class="areaDate meta-list">
                     <li class="leftSideDate meta-item">
@@ -200,7 +216,9 @@ export const updateWeater = function (lat, lon) {
                   </li>
                 </ul>
               </div> 
-              <span class="badge aqi-${aqi} lable--${aqi}" title="${module.aqiTitle[aqi].massage}">
+              <span class="badge aqi-${aqi} lable--${aqi}" title="${
+        module.aqiTitle[aqi].massage
+      }">
                 ${module.aqiTitle[aqi].level}
               </span>
             </div>
@@ -284,15 +302,15 @@ export const updateWeater = function (lat, lon) {
      * 24h Forecast Section
      */
 
-    fetchData(url.forcast(lat,lon),function (forecast) {
-      const{
-        list:forecastList,
-        city:{timezone}
-      } = forecast
+    fetchData(url.forcast(lat, lon), function (forecast) {
+      const {
+        list: forecastList,
+        city: { timezone },
+      } = forecast;
       /**
        * main temp & wind section
        */
-      hourlyForcast.innerHTML=`
+      hourlyForcast.innerHTML = `
       <h2 class="title-2">Today at</h2>
       <div class="tempDiv" >
         <ul class="slider-list" data-temp>
@@ -304,25 +322,25 @@ export const updateWeater = function (lat, lon) {
       </div>
       `;
 
-      for(const[index,data] of forecastList.entries()){
-        if(index>7) break ;
-        const{
-          dt:dateTimeUnix,
-          main:{temp},
+      for (const [index, data] of forecastList.entries()) {
+        if (index > 7) break;
+        const {
+          dt: dateTimeUnix,
+          main: { temp },
           weather,
-          wind:{deg:windDirecation ,speed:windSpeed }  
-        }= data 
+          wind: { deg: windDirecation, speed: windSpeed },
+        } = data;
         const [{ description, icon }] = weather;
 
         /**
          * temp section
-        */
-        const tempLi = document.createElement("li"); 
+         */
+        const tempLi = document.createElement("li");
         tempLi.classList.add("slider-item");
 
-        tempLi.innerHTML=`
+        tempLi.innerHTML = `
         <div class="slider-card">
-            <p class="p-tag">${module.getHours(dateTimeUnix , timezone)}</p>
+            <p class="p-tag">${module.getHours(dateTimeUnix, timezone)}</p>
               <img src="icon/icons8-moon-48.png" class="Weather-icon" alt="${description}" title="${description}"/>
             <p class="p-tag">${parseInt(temp)}&deg;</p>
         </div>
@@ -333,59 +351,65 @@ export const updateWeater = function (lat, lon) {
          */
         const wind = document.createElement("li");
         wind.classList.add("slider-item");
-        wind.innerHTML=`
+        wind.innerHTML = `
         <div class="slider-card">
         <p class="p-tag">${module.getHours(dateTimeUnix, timezone)}</p>
           <img 
           src="icon/icons8-navigation-1.png"
           class="Weather-icon"/
           alt="direction"
-          style="transfrom:rotate(${windDirecation-180}deg)">
+          style = "transform: rotate(${windDirecation - 180}deg);"
+          >
           <p class="p-tag">${parseInt(module.disteanceinKmh(windSpeed))}km/h</p>
       </div>
         `;
-        console.log(module.getHours);
+        // console.log(module.getHours);
         hourlyForcast.querySelector("[data-wind]").appendChild(wind);
       }
-      
+
       /**
        * 5 Day Forcast
-      */
-    //   fiveDaysForecast.innerHTML=`
-    //   <div class="card current-weather-card">
-    //       <div class="weatherDet ">
-    //           <h2>Now</h2>
-    //           <h1 class="temp-1">28&deg;<sup>c</sup></h1>
-    //           <img src="icon/icons8-cloud-96.png" class="Weather-icon mainWeathericon">
-    //           <p class="cloud-condition">Brokan Clouds</p>
-    //       </div>
-    //       <ul class="areaDate meta-list">
-    //           <li class="leftSideDate meta-item">
-    //               <img class="area-icon" src="icon/icons8-date-50.png">
-    //               <p style="font-size: 18px;">wednesday 1, Mar</p>
-    //           </li>
-    //           <li class="leftSideLocation meta-item">
-    //               <img class="area-icon" src="icon/icons8-location-50.png">
-    //               <p style="font-size: 18px;" data-location>Mumbai</p>
-    //           </li>
-    //       </ul>
-    //   </div>
-    //   `
-    //  for(let i=7, len = forecastList.length; i<len;i+=8){
-    //     const {
-    //       main:{},
-    //       weather,
-    //       dt_txt
-    //     }=forecastList[i];
+       */
+      fiveDaysForecast.innerHTML = `
+      <ul data-forcast-list>
+      </ul>
+      `;
+      for (let i = 7, len = forecastList.length; i < len; i += 8) {
+        const {
+          main: { temp_max },
+          weather,
+          dt_txt,
+        } = forecastList[i];
 
-    //     const [{ description, icon }] = weather;
-    //     const date = new Date(dt_txt);
+        const [{ description, icon }] = weather;
+        const date = new Date(dt_txt);
 
-    //     const crtLi = document.createElement("li");
-    //     crtLi.classList.add("")
-    //  }
+        const crtLi = document.createElement("li");
+        crtLi.classList.add("card-item");
+        crtLi.innerHTML = `
+        <div class="icon-wrapper">
+        <img
+          src="icon/icons8-moon-48.png"
+          width="25px"
+          height="25px"
+          alt="${description}"
+          class="Weather-icon WeatherIconForDays"
+          title="${description}"
+          />
+        <span class="span">
+          <p class="temp-2">${parseInt(temp_max)}</p>
+        </span>
+      </div>
+      <p class="labal-1 leftDate">${date.getDate()} ${
+          module.monthsName[date.getMonth()]
+        }</p>
+      <p class="labal-1">${module.weekDaysName[date.getUTCDay()]}</p>
+        `;
+        fiveDaysForecast
+          .querySelector("[data-forcast-list]")
+          .appendChild(crtLi);
+      }
     });
-     
   });
 };
 
