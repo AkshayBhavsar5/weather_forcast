@@ -3,8 +3,8 @@
 
 import { updateWeater, error404 } from "./script.js";
 
-const defuleLocation = "#/weather?51.5073219&-0.12767474"; //london
 
+const defuleLocation = "#/weather?51.5073219&-0.12767474"; //london
 const currentLocation = function () {
   console.log("hello from CL");
   window.navigator.geolocation.getCurrentPosition(
